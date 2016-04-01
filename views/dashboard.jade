@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  div(class="header")
+      div(class="pure-menu pure-menu-horizontal")
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS - Employee Data Management System
+        ul(class="pure-menu-list")
+          li(class="pure-menu-item pure-menu-selected")
+            a(class="pure-menu-link",href="/employees/dashboard") Home
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/view") View Profile
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/edit") Edit Profile
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/passwd") Change Password
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/audit/view") View Audit
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/logout") Log Out
+  div(class="content")
+    form(class="pure-form",action="/employees/dashboard",method="post")
+      fieldset
+        legend Employee List
+        input(type="text",placeholder="Filter",id="filter",name="filter")
+        button(type="submit",class="pure-button pure-button-primary") Search
+    table(class='pure-table')
+      thead
+        tr
+          th User Name
+          th First Name
+          th Last Name
+          th Email
+          th Edit
+          th Delete
+      tbody
+        for emp in emps
+          tr
+            td= emp.userName
+            td= emp.firstName
+            td= emp.lastName
+            td= emp.email
+            td
+              a(href='/employees/edit/#{emp.userName}') edit
+            td
+              a(href='/employees/delete/#{emp.userName}') delete
