@@ -8,32 +8,58 @@ block content
           li(class="pure-menu-item")
             a(class="pure-menu-link",href="/employees/dashboard") Home
           li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
-            a(class="pure-menu-link",href="#") Profile
+            a(class="pure-menu-link",href="#") #{user.firstName} #{user.lastName}
             ul(class="pure-menu-children")
-              li(class="pure-menu-item")
-                a(class="pure-menu-link pure-menu-selected",href="/employees/edit") View/Edit Profile
+              if action=='View'
+                li(class="pure-menu-item")
+                  a(class="pure-menu-link pure-menu-selected",href="/employees/view") View Profile
+                li(class="pure-menu-item")
+                  a(class="pure-menu-link",href="/employees/edit") Edit Profile
+              else
+                li(class="pure-menu-item")
+                  a(class="pure-menu-link",href="/employees/view") View Profile
+                li(class="pure-menu-item")
+                  a(class="pure-menu-link",href="/employees/edit") Edit Profile     
               li(class="pure-menu-item")
                 a(class="pure-menu-link",href="/employees/passwd") Change Password
-          li(class="pure-menu-item") 
-            a(class="pure-menu-link",href="/employees/audit") View Audit
+          if admin     
+            li(class="pure-menu-item") 
+              a(class="pure-menu-link",href="/employees/audit") View Audit
           li(class="pure-menu-item") 
             a(class="pure-menu-link",href="/employees/logout") Log Out
   div(class="content")
-    p= msg
-    form(class="pure-form pure-form-aligned",action="/employees/edit",method="post")
+    div(class="pure-u-2-24")
+    form(class="pure-form pure-form-aligned pure-u-20-24",action="/employees/edit",method="post")
       fieldset
-        legend View/Edit Employee Profile
+        h2 #{action} Employee Profile
+        if msg
+          div(class="pure-control-group")
+            label(for="msg")
+            label= msg        
         div(class="pure-control-group")
           label(for="userName") User Name
-          input(type="text",value="#{user.userName}",id="userName",name="userName",required)
-        div(class="pure-control-group")
-          label(for="firstName") First Name
-          input(type="text",value="#{user.firstName}",id="firstName",name="firstName",required)
-        div(class="pure-control-group")
-          label(for="lastName") Last Name
-          input(type="text",value="#{user.lastName}",id="lastName",name="lastName",required)
-        div(class="pure-control-group")
-          label(for="email") Email
-          input(type="text",value="#{user.email}",id="email",name="email",required)
-        div(class="pure-controls")
-          button(type="submit",class="pure-button pure-button-primary") Update
+          input(type="text",value="#{user.userName}",id="userName",name="userName",readonly)
+        if action=='View'
+          div(class="pure-control-group")
+            label(for="firstName") First Name
+            input(type="text",value="#{user.firstName}",id="firstName",name="firstName",readonly)
+          div(class="pure-control-group")
+            label(for="lastName") Last Name
+            input(type="text",value="#{user.lastName}",id="lastName",name="lastName",readonly)
+          div(class="pure-control-group")
+            label(for="email") Email
+            input(type="text",value="#{user.email}",id="email",name="email",readonly)
+        else if action=='Edit'
+          div(class="pure-control-group")
+            label(for="firstName") First Name
+            input(type="text",value="#{user.firstName}",id="firstName",name="firstName",required)
+          div(class="pure-control-group")
+            label(for="lastName") Last Name
+            input(type="text",value="#{user.lastName}",id="lastName",name="lastName",required)
+          div(class="pure-control-group")
+            label(for="email") Email
+            input(type="text",value="#{user.email}",id="email",name="email",required)            
+          div(class="pure-controls")
+            button(type="submit",class="pure-button pure-button-primary") Update
+            button(type="reset",class="pure-button pure-button-secondary") Reset
+  div(class="pure-u-2-24")

@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  div(class="header")
+      div(class="pure-menu pure-menu-horizontal")
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS
+        ul(class="pure-menu-list")
+          li(class="pure-menu-item")
+            a(class="pure-menu-link",href="/employees/dashboard") Home
+          li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
+            a(class="pure-menu-link",href="#") #{user.firstName} #{user.lastName}
+            ul(class="pure-menu-children")
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/view") View Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/edit") Edit Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/passwd") Change Password
+          if admin     
+            li(class="pure-menu-item") 
+              a(class="pure-menu-link",href="/employees/audit") View Audit
+            li(class="pure-menu-item")
+              a(class="pure-menu-link pure-menu-selected",href="/employees/upload") Bulk Upload
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/logout") Log Out
+  div(class="content pure-g")
+    div(class="pure-u-2-24")
+    form(class="pure-form pure-form-aligned pure-u-20-24",action="/employees/upload",method="post",enctype="multipart/form-data")
+      fieldset
+        h2 Employee Bulk Upload
+        if msg
+          div(class="pure-control-group")
+            label(for="msg")
+            label= msg
+        div(class="pure-control-group")
+          label(for="bulkFile") File
+          input(type="file",id="bulkFile",name="bulkFile")
+        div(class="pure-controls")
+          button(type="submit",class="pure-button pure-button-primary") Upload
+          button(type="reset",class="pure-button pure-button-secondary") Reset
+    div(class="pure-u-2-24")

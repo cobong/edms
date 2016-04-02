@@ -1,8 +1,39 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+.pure-menu {
+	background-color:navy;
+	color:white;
+	font-weight:bold
 }
 
-a {
-  color: #00B7FF;
+.pure-menu-children{
+	background-color:navy;
+	color:white;
+	font-weight:bold
+}
+
+.pure-menu-link{
+    color:white;
+    }
+
+.pure-menu-link:hover{
+    background-color:lightblue;
+    color:gray
+    }
+    
+.pure-menu-selected{
+    background-color:blue;
+    }
+    
+legend{
+font-size:20px;
+font-weight:bold;
+}
+
+.pure-menu-heading {
+font-size:30px;
+}
+
+h2 {
+border-bottom-style:solid;
+border-bottom-width:1px;
+border-bottom-color:gray
 }

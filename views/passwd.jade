@@ -8,21 +8,28 @@ block content
           li(class="pure-menu-item")
             a(class="pure-menu-link",href="/employees/dashboard") Home
           li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
-            a(class="pure-menu-link",href="#") Profile
+            a(class="pure-menu-link",href="#") #{user.firstName} #{user.lastName}
             ul(class="pure-menu-children")
               li(class="pure-menu-item")
-                a(class="pure-menu-link",href="/employees/edit") View/Edit Profile
+                a(class="pure-menu-link",href="/employees/view") View Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/edit") Edit Profile
               li(class="pure-menu-item")
                 a(class="pure-menu-link pure-menu-selected",href="/employees/passwd") Change Password
-          li(class="pure-menu-item") 
-            a(class="pure-menu-link",href="/employees/audit") View Audit
+          if admin     
+            li(class="pure-menu-item") 
+              a(class="pure-menu-link",href="/employees/audit") View Audit
           li(class="pure-menu-item") 
             a(class="pure-menu-link",href="/employees/logout") Log Out
-  div(class="content")
-    p= msg
-    form(class="pure-form pure-form-aligned",action="/employees/passwd",method="post")
+  div(class="content pure-g")
+    div(class="pure-u-2-24")
+    form(class="pure-form pure-form-aligned pure-u-20-24",action="/employees/passwd",method="post")
       fieldset
-        legend Employee Password Change
+        h2 Employee Password Change
+        if msg
+          div(class="pure-control-group")
+            label(for="msg")
+            label= msg
         div(class="pure-control-group")
           label(for="userName") User Name
           input(type="text",placeholder="User Name",id="userName",name="userName",value="#{user.userName}",readonly)
@@ -37,3 +44,5 @@ block content
           input(type="password",placeholder="Confirm Password",id="cpassword",name="cpassword",required)
         div(class="pure-controls")
           button(type="submit",class="pure-button pure-button-primary") Change Password
+          button(type="reset",class="pure-button pure-button-secondary") Reset
+    div(class="pure-u-2-24")

@@ -8,40 +8,51 @@ block content
           li(class="pure-menu-item")
             a(class="pure-menu-link pure-menu-selected",href="/employees/dashboard") Home
           li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
-            a(class="pure-menu-link",href="#") Profile
+            a(class="pure-menu-link",href="#") #{user.firstName} #{user.lastName}
             ul(class="pure-menu-children")
               li(class="pure-menu-item")
-                a(class="pure-menu-link",href="/employees/edit") View/Edit Profile
+                a(class="pure-menu-link",href="/employees/view") View Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/edit") Edit Profile
               li(class="pure-menu-item")
                 a(class="pure-menu-link",href="/employees/passwd") Change Password
-          li(class="pure-menu-item") 
-            a(class="pure-menu-link",href="/employees/audit") View Audit
-          li(class="pure-menu-item") 
+          if admin     
+            li(class="pure-menu-item") 
+              a(class="pure-menu-link",href="/employees/audit") View Audit
+            li(class="pure-menu-item")
+              a(class="pure-menu-link",href="/employees/upload") Bulk Upload
+           li(class="pure-menu-item") 
             a(class="pure-menu-link",href="/employees/logout") Log Out
-  div(class="content")
-    h1 Welcome #{user.firstName} #{user.lastName}
-    form(class="pure-form",action="/employees/dashboard",method="post")
-      fieldset
-        legend Employee List
-        input(type="text",placeholder="Filter",id="filter",name="filter")
-        button(type="submit",class="pure-button pure-button-primary") Search
-    table(class='pure-table pure-table-horizontal',style="width:100%")
-      thead
-        tr
-          th User Name
-          th First Name
-          th Last Name
-          th Email
-          th Edit
-          th Delete
-      tbody
-        for emp in emps
+  div(class="content pure-g")
+    div(class="pure-u-2-24")
+    div(class="pure-u-20-24")
+      h1 Welcome #{user.firstName} #{user.lastName}
+      form(class="pure-form",action="/employees/dashboard",method="post")
+        fieldset
+          h2 Employee List
+          if admin
+            input(type="text",placeholder="Filter",id="filter",name="filter")
+            button(type="submit",class="pure-button pure-button-primary") Search
+      table(class='pure-table pure-table-horizontal',style="width:100%")
+        thead
           tr
-            td= emp.userName
-            td= emp.firstName
-            td= emp.lastName
-            td= emp.email
-            td
-              a(href='/employees/edit/#{emp.userName}') edit
-            td
-              a(href='/employees/delete/#{emp.userName}') delete
+            th User Name
+            th First Name
+            th Last Name
+            th Email
+            if admin
+              th Edit
+              th Delete
+        tbody
+          for emp in emps
+            tr
+              td= emp.userName
+              td= emp.firstName
+              td= emp.lastName
+              td= emp.email
+              if admin
+                td
+                  a(href='/employees/edit/#{emp.userName}') edit
+                td
+                  a(href='/employees/delete/#{emp.userName}') delete
+    div(class="pure-u-2-24")            

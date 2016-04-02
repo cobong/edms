@@ -1,6 +1,7 @@
 var express = require('express');
 var colors = require('colors');
 var router = express.Router();
+var fs = require('fs');
 
 var EmployeeModel = require('../models/employeeModel');
 var Employee = EmployeeModel.model;
@@ -23,22 +24,22 @@ function audit(user,comments){
 router.get('/audit', function(req, res, next) {
     if(req.session.user==null)
         res.redirect('/employees/login');
-	Audit.find({userName:req.session.user.userName},function(err, entries) {
+	Audit.find(function(err, entries) {
 		if (err)
 			res.send(err)
         else
-            res.render('audit',{entries:entries,title:'Employee Audit',user:req.session.user});
+            res.render('audit',{entries:entries,title:'Employee Audit',user:req.session.user,admin:req.session.admin});
 	});
 });
 
 router.get('/dashboard', function(req, res, next) {
     if(req.session.user==null)
         res.redirect('/employees/login');
-	Employee.find(function(err, employees) {
+	Employee.find({userName:{'$ne':'admin'}},function(err, employees) {
 		if (err)
-			res.send(err)
+			res.send(err);
         else
-            res.render('dashboard',{emps:employees,title:'Employee Dashboard',user:req.session.user});
+            res.render('dashboard',{emps:employees,title:'Employee Dashboard',user:req.session.user,admin:req.session.admin});
 	});
 });
 
@@ -92,10 +93,12 @@ router.post('/login', function(req, res, next) {
 		password : password
 		}, function(err, employee) {
 			if (err || !employee)
-                res.render('login',{title:'Employee Login',msg:'Please check your username/password'});
+                res.render('login',{title:'Employee Login',msg:'Invalid username/password'});
             else{
                 delete employee['password']
                 req.session.user=employee;
+                if(employee.userName=='admin')
+                  req.session.admin=true;
                 audit(req.session.user,'Loggeded in');
                 res.redirect('/employees/dashboard');
             }
@@ -126,7 +129,7 @@ router.get('/passwd', function(req, res, next) {
     if(req.session.user==null)
         res.redirect('/employees/login');
     else
-        res.render('passwd',{title:'Employee Password Change',user:req.session.user});
+        res.render('passwd',{title:'Employee Password Change',user:req.session.user,admin:req.session.admin});
 });
 
 router.post('/passwd', function(req, res, next) {
@@ -141,7 +144,7 @@ router.post('/passwd', function(req, res, next) {
 			if (err)
                 res.render('passwd',{title:'Employee Password Change',msg:err,user:req.session.user});
             else if(!employee)
-                res.render('passwd',{title:'Employee Password Change',msg:'Incorrect old password',user:req.session.user});
+                res.render('passwd',{title:'Employee Password Change',msg:'Incorrect old password',user:req.session.user,admin:req.session.admin});
             else{
                 if( newPass==confPass)
                     Employee.update({
@@ -151,10 +154,10 @@ router.post('/passwd', function(req, res, next) {
                         { password:newPass },
                         function(err, employee) {
                             if (err || !employee)
-                                res.render('passwd',{title:'Employee Password Change',msg:'Password change failed',user:req.session.user});
+                                res.render('passwd',{title:'Employee Password Change',msg:'Password change failed',user:req.session.user,admin:req.session.admin});
                             else{ 
                                 audit(req.session.user,'Password changed');
-                                res.render('passwd',{title:'Employee Password Change',msg:'Password change success',user:req.session.user});
+                                res.render('passwd',{title:'Employee Password Change',msg:'Password change success',user:req.session.user,admin:req.session.admin});
                             }
                         });
             }
@@ -165,7 +168,14 @@ router.get('/edit', function(req, res, next) {
     if(req.session.user==null)
         res.redirect('/employees/login');
     else
-        res.render('profile',{title:'Employee Profile',user:req.session.user});
+        res.render('profile',{action:'Edit',title:'Employee Profile',user:req.session.user,admin:req.session.admin});
+});
+
+router.get('/view', function(req, res, next) {
+    if(req.session.user==null)
+        res.redirect('/employees/login');
+    else
+        res.render('profile',{action:'View',title:'Employee Profile',user:req.session.user,admin:req.session.admin});
 });
 
 router.get('/edit/:userName', function(req, res, next) {
@@ -176,7 +186,7 @@ router.get('/edit/:userName', function(req, res, next) {
             if (err)
                 res.send(err);
             else
-                res.render('profile',{title:'Employee Profile',user:employee});
+                res.render('profile',{action:'Edit',title:'Employee Profile',user:employee,admin:req.session.admin});
         });
     }
 });
@@ -196,11 +206,43 @@ router.post('/edit', function(req, res, next) {
                 if (err)
                     res.send(err);
                 else{
-                    audit(req.session.user,'Profile updated '+req.body.userName);
-                    res.redirect('/employees/dashboard');
+                    Employee.findOne({userName:req.session.user.userName},
+                        function(err, employee) {
+                            audit(req.session.user,'Profile updated '+user.userName);
+                            res.redirect('/employees/dashboard');
+                    });
                 }
             });
 });
+
+
+router.get('/upload', function(req, res, next) {
+    if(req.session.user==null)
+        res.redirect('/employees/login');
+    else if(!req.session.admin)
+        res.redirect('/employees/dashboard');
+    else
+        res.render('upload',{title:'Bulk Upload',user:req.session.user,admin:req.session.admin});
+});
+
+router.post('/upload', function(req, res, next) {
+    fs.readFile(req.files.bulkFile.path, function (err, data) {
+        var Converter = require("csvtojson").Converter;
+        var converter = new Converter({});
+        converter.fromString(data.toString(), function(err,result){
+            result.forEach(function(user) {  
+                Employee.create(user, function(err, employee) {
+                    if (err)
+                        res.send(err);
+                    else
+                        audit(req.session.user,'Upload : '+ employee.userName);
+                });
+            });
+            res.redirect('/employees/dashboard');
+        });
+    });
+});
+
 
 router.use('/*',function(req, res, next) {
     if(req.session.user==null)

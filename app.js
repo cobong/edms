@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var colors = require('colors');
-
+var multipart = require('connect-multiparty');
 var routes = require('./routes/index');
 var employees = require('./routes/employees');
 
@@ -31,6 +31,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+app.use(multipart());
 app.use('/', routes);
 app.use('/employees', employees);
 
