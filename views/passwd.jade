@@ -28,12 +28,12 @@ block content
           input(type="text",placeholder="User Name",id="userName",name="userName",value="#{user.userName}",readonly)
         div(class="pure-control-group")
           label(for="opassword") Old Password
-          input(type="password",placeholder="Old Password",id="opassword",name="opassword")
+          input(type="password",placeholder="Old Password",id="opassword",name="opassword",required)
         div(class="pure-control-group")
           label(for="password") Password
-          input(type="password",placeholder="Password",id="password",name="password")
+          input(type="password",placeholder="Password",id="password",name="password",required)
         div(class="pure-control-group")
           label(for="cpassword") Confirm Password
-          input(type="password",placeholder="Confirm Password",id="cpassword",name="cpassword")
+          input(type="password",placeholder="Confirm Password",id="cpassword",name="cpassword",required)
         div(class="pure-controls")
           button(type="submit",class="pure-button pure-button-primary") Change Password

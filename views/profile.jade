@@ -25,15 +25,15 @@ block content
         legend View/Edit Employee Profile
         div(class="pure-control-group")
           label(for="userName") User Name
-          input(type="text",value="#{user.userName}",id="userName",name="userName")
+          input(type="text",value="#{user.userName}",id="userName",name="userName",required)
         div(class="pure-control-group")
           label(for="firstName") First Name
-          input(type="text",value="#{user.firstName}",id="firstName",name="firstName")
+          input(type="text",value="#{user.firstName}",id="firstName",name="firstName",required)
         div(class="pure-control-group")
           label(for="lastName") Last Name
-          input(type="text",value="#{user.lastName}",id="lastName",name="lastName")
+          input(type="text",value="#{user.lastName}",id="lastName",name="lastName",required)
         div(class="pure-control-group")
           label(for="email") Email
-          input(type="text",value="#{user.email}",id="email",name="email")
+          input(type="text",value="#{user.email}",id="email",name="email",required)
         div(class="pure-controls")
           button(type="submit",class="pure-button pure-button-primary") Update
