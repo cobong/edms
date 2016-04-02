@@ -3,8 +3,8 @@ var Schema = mongoose.Schema;
 
 var AuditSchema = new Schema({
 	userName : {type: String, required:true},
-	timeStamp : {type: Date, required:true},
+	timeStamp : { type: Date, default: Date.now },
 	comments : {type: String, required:true}
 });
 
-exports.AuditModel = mongoose.model('Audit',AuditSchema);
+exports.model = mongoose.model('Audit',AuditSchema);

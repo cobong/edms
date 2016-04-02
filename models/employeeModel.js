@@ -7,4 +7,4 @@ var EmployeeSchema = mongoose.Schema({
 	password : {type: String, required:true}
 });
 
-exports.EmployeeModel = mongoose.model('Employee',EmployeeSchema);
+exports.model = mongoose.model('Employee',EmployeeSchema);

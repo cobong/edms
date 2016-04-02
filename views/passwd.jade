@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  div(class="header")
+      div(class="pure-menu pure-menu-horizontal")
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS
+        ul(class="pure-menu-list")
+          li(class="pure-menu-item")
+            a(class="pure-menu-link",href="/employees/dashboard") Home
+          li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
+            a(class="pure-menu-link",href="#") Profile
+            ul(class="pure-menu-children")
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/edit") View/Edit Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link pure-menu-selected",href="/employees/passwd") Change Password
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/audit") View Audit
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/logout") Log Out
+  div(class="content")
+    p= msg
+    form(class="pure-form pure-form-aligned",action="/employees/passwd",method="post")
+      fieldset
+        legend Employee Password Change
+        div(class="pure-control-group")
+          label(for="userName") User Name
+          input(type="text",placeholder="User Name",id="userName",name="userName",value="#{user.userName}",readonly)
+        div(class="pure-control-group")
+          label(for="opassword") Old Password
+          input(type="password",placeholder="Old Password",id="opassword",name="opassword")
+        div(class="pure-control-group")
+          label(for="password") Password
+          input(type="password",placeholder="Password",id="password",name="password")
+        div(class="pure-control-group")
+          label(for="cpassword") Confirm Password
+          input(type="password",placeholder="Confirm Password",id="cpassword",name="cpassword")
+        div(class="pure-controls")
+          button(type="submit",class="pure-button pure-button-primary") Change Password

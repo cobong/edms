@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  div(class="header")
+      div(class="pure-menu pure-menu-horizontal")
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS
+        ul(class="pure-menu-list")
+          li(class="pure-menu-item")
+            a(class="pure-menu-link",href="/employees/dashboard") Home
+          li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
+            a(class="pure-menu-link",href="#") Profile
+            ul(class="pure-menu-children")
+              li(class="pure-menu-item")
+                a(class="pure-menu-link pure-menu-selected",href="/employees/edit") View/Edit Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/passwd") Change Password
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/audit") View Audit
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/logout") Log Out
+  div(class="content")
+    p= msg
+    form(class="pure-form pure-form-aligned",action="/employees/edit",method="post")
+      fieldset
+        legend View/Edit Employee Profile
+        div(class="pure-control-group")
+          label(for="userName") User Name
+          input(type="text",value="#{user.userName}",id="userName",name="userName")
+        div(class="pure-control-group")
+          label(for="firstName") First Name
+          input(type="text",value="#{user.firstName}",id="firstName",name="firstName")
+        div(class="pure-control-group")
+          label(for="lastName") Last Name
+          input(type="text",value="#{user.lastName}",id="lastName",name="lastName")
+        div(class="pure-control-group")
+          label(for="email") Email
+          input(type="text",value="#{user.email}",id="email",name="email")
+        div(class="pure-controls")
+          button(type="submit",class="pure-button pure-button-primary") Update

@@ -3,26 +3,41 @@ extends layout
 block content
   div(class="header")
       div(class="pure-menu pure-menu-horizontal")
-        a(class="pure-menu-heading pure-menu-link",href="#") EDMS - Employee Data Management System
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS
         ul(class="pure-menu-list")
           li(class="pure-menu-item")
             a(class="pure-menu-link",href="/employees/login") Login
   div(class="content")
+    p= msg
     form(class="pure-form pure-form-aligned",action="/employees/register",method="post")
       fieldset
         legend Employee Registration
-        div(class="pure-control-group")
-          label(for="userName") User Name
-          input(type="text",placeholder="User Name",id="userName",name="userName")
-        div(class="pure-control-group")
-          label(for="firstName") First Name
-          input(type="text",placeholder="First Name",id="firstName",name="firstName")
-        div(class="pure-control-group")
-          label(for="lastName") Last Name
-          input(type="text",placeholder="Last Name",id="lastName",name="lastName")
-        div(class="pure-control-group")
-          label(for="email") Email
-          input(type="text",placeholder="Email",id="email",name="email")
+        if user
+          div(class="pure-control-group")
+            label(for="userName") User Name
+            input(type="text",value="#{user.userName}",id="userName",name="userName")
+          div(class="pure-control-group")
+            label(for="firstName") First Name
+            input(type="text",value="#{user.firstName}",id="firstName",name="firstName")
+          div(class="pure-control-group")
+            label(for="lastName") Last Name
+            input(type="text",value="#{user.lastName}",id="lastName",name="lastName")
+          div(class="pure-control-group")
+            label(for="email") Email
+            input(type="text",value="#{user.email}",id="email",name="email")
+        else
+          div(class="pure-control-group")
+            label(for="userName") User Name
+            input(type="text",placeholder="User Name",id="userName",name="userName")
+          div(class="pure-control-group")
+            label(for="firstName") First Name
+            input(type="text",placeholder="First Name",id="firstName",name="firstName")
+          div(class="pure-control-group")
+            label(for="lastName") Last Name
+            input(type="text",placeholder="Last Name",id="lastName",name="lastName")
+          div(class="pure-control-group")
+            label(for="email") Email
+            input(type="text",placeholder="Email",id="email",name="email")        
         div(class="pure-control-group")
           label(for="password") Password
           input(type="password",placeholder="Password",id="password",name="password")

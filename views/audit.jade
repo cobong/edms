@@ -1,0 +1,34 @@
+extends layout
+
+block content
+  div(class="header")
+      div(class="pure-menu pure-menu-horizontal")
+        a(class="pure-menu-heading pure-menu-link",href="#") EDMS
+        ul(class="pure-menu-list")
+          li(class="pure-menu-item")
+            a(class="pure-menu-link",href="/employees/dashboard") Home
+          li(class="pure-menu-item pure-menu-has-children pure-menu-allow-hover")
+            a(class="pure-menu-link",href="#") Profile
+            ul(class="pure-menu-children")
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/view") View Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/edit") Edit Profile
+              li(class="pure-menu-item")
+                a(class="pure-menu-link",href="/employees/passwd") Change Password
+          li(class="pure-menu-item pure-menu-selected") 
+            a(class="pure-menu-link pure-menu-selected",href="/employees/audit") View Audit
+          li(class="pure-menu-item") 
+            a(class="pure-menu-link",href="/employees/logout") Log Out
+  div(class="content-wrapper")
+    h1 Welcome #{user.firstName} #{user.lastName}
+    table(class='pure-table pure-table-horizontal',style="width:100%")
+      thead
+        tr
+          th TimeStamp
+          th Comments
+      tbody
+        for entry in entries
+          tr
+            td= entry.timeStamp.toISOString()
+            td= entry.comments
